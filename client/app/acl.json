@@ -1,0 +1,26 @@
+{
+
+	"Guest"	:	{
+
+		"denied"  : [],
+		"HomeController"	  : ["*"],
+		"RegisterController": ["login", "register"],
+		"RestrictedController": ["*"]
+	},
+
+	"LoggedIn"	:	{
+
+		"denied"  : {
+					"RegisterController": ["login", "register"]
+					},
+					
+		"HomeController"	  : ["*"],
+		"RegisterController": ["create","logout"],
+		"FoodController": ["*"]
+	}
+
+
+
+
+}
+ 

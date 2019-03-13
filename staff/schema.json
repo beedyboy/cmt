@@ -1,0 +1,12 @@
+"Example": {
+    "cats": [ "1" ],
+    "js": { "Example.method": "", },
+    "excludes": "Example",
+    "headers": { "X-Powered-By": "Techanow" },
+    "html": "<link[^>]example\\.css",
+    "implies": "PHP\\;confidence:50",
+    "meta": { "generator": "(?:Example|Another Example)" },
+    "script": "example-([0-9.]+)\\.js\\;confidence:50\\;version:\\1",
+    "url": ".+\\.example\\.com",
+    "website": "http://cedarcliffservices.com.ng",
+  }

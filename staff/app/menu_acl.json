@@ -1,0 +1,24 @@
+{
+
+	
+		"Home"	  : "HomeController",		 
+		"FoodController":  {
+			"My Foods": "food",
+			"Create Food": "food/create",
+			"View Foods": "food/view",
+			"separator" : ""
+		},
+	"RegisterController":  {
+			 	"View All"  : "register/index",
+			 "Create"  : "register/create"
+		}, 
+			"Google": "https://www.google.com",
+			"PHP Docs": "https://php.net/manual/en",
+			 "Login"  : "register/login",
+			 "Logout"  : "register/logout"
+	 
+	
+
+
+
+}
