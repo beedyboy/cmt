@@ -82,14 +82,56 @@ public function pendingProject()
 <td><?=$x;?></td>
 <td><?php echo $Product->findById($ActiveProject->productId)->product_name; ?> </td>  
 <td>
-<?php $user =  $User->findById($ActiveProject->staffId); 
+<?php $user =  $User->findById($ActiveProject->userId); 
 		echo $user->acc_first_name. " ".$user->acc_last_name;?> 
 </td> 
 <td><?php echo $ActiveProject->created_at; ?> </td> 
 <td><?php echo $ActiveProject->updated_at; ?> </td> 
 <td> 
-<button type="button" name="assignManager" part='list' id="<?php echo $ActiveProject->id; ?>" class="btn btn-primary btn-xs assignManager">
-	<i class="fas fa-pencil-alt fa-fw"></i> Assign</button>
+<button type="button" name="setPrice" part='list' id="<?php echo $ActiveProject->id; ?>" class="btn btn-primary btn-xs setPrice">
+	<i class="fas fa-pencil-alt fa-fw"></i> Set Price</button>
+</td>
+
+	 
+</tr>
+ 
+<?php 
+$x++; 
+ } 
+  ?> 
+  <tr><td colspan="4"><?=pageLinks();?></td></tr>
+  <?php
+}
+
+public function negotiatingProject()
+{
+	$User = new User('users'); 
+	$Admin = new Admin('admins'); 
+	$Product = new Product('products'); 
+	$Project = new Project('projects'); 
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'projectStatus = ?', 'bind' => ['negotiating'] ]);
+ 	$x = 1;
+   foreach ($data as $ActiveProject)
+  {
+             
+  ?> 
+<tr> 
+<td><?=$x;?></td>
+<td><?php echo $Product->findById($ActiveProject->productId)->product_name; ?> </td>  
+<td>
+<?php $user =  $User->findById($ActiveProject->userId); 
+		echo $user->acc_first_name. " ".$user->acc_last_name;?> 
+</td> 
+<td><?php echo $ActiveProject->negotiatedAmount; ?> </td>
+<td><?php echo $ActiveProject->created_at; ?> </td>  
+<td><?php echo $ActiveProject->updated_at; ?> </td> 
+<td>
+<?php $manager =  $Admin->findById($ActiveProject->updated_by); 
+		echo $manager->firstname. " ".$manager->lastname;?> 
+</td> 
+<td> 
+<button type="button" name="setPrice" part='list' id="<?php echo $ActiveProject->id; ?>" class="btn btn-primary btn-xs setPrice">
+	<i class="fas fa-pencil-alt fa-fw"></i> Set Active</button>
 </td>
 
 	 
@@ -129,6 +171,14 @@ public function create()
   	 $this->view->Product = $Product->find(); 
 	 $this->view->displayErrors = $this->validate->displayErrors();
 	 $this->view->extra('project/create');
+}
+ 
+ 
+public function setPrice($id)
+{   
+  	 $this->view->id = $id; 
+	 $this->view->displayErrors = $this->validate->displayErrors();
+	 $this->view->extra('project/setPrice');
 }
  
 
@@ -195,6 +245,60 @@ public function update()
  					
  		}
 	 
+ //update ends down here
+}
+ 
+ 
+public function updatePrice()
+{
+  
+		if($_POST)
+		{
+			$data = array(); 
+			$this->validate->check($_POST, [  'price'=> [
+													'display'=> 'Project\'s Amount',
+													'required'=> true,
+													'max' => 30
+												] 
+										]);
+		  
+		   if($this->validate->passed())
+		   {
+		   		$Project = $this->Project->findById(Input::get('id'));
+		   		
+		   		if($Project->negotiatedAmount = Input::get('price'))
+		   		{ 
+		   			 
+		   			//compute the fields
+		   			$fields = ['negotiatedAmount' => Input::get('price'), 'projectStatus'=>'Negotiating',  'updated_at' => '',  'updated_by' => (int)$this->admin_id  ];	
+		   			//update the db
+		   			$send = $this->Project->update($fields, (int)Input::get('id') );
+					 
+		   			//check if updated
+		   			if($send)
+		   			{
+							$data['status'] = "success";
+							$data['msg']  =   'Project Amount set successfully';
+   				  
+		   			}
+		   			else
+		   			{
+		   				$data['status'] = "db_error";
+		   				$data['msg'] = "Error: Amount was not set. Please try again later";
+		   			}
+		   		}
+			 
+					unset($_POST);
+				 
+		   }
+		   else
+		   {
+					 	$data['status'] = "error";
+						$data['msg'] = $this->validate->displayErrors();
+		   }
+		   echo json_encode($data);  
+ 					
+ 		} 
  //update ends down here
 }
  

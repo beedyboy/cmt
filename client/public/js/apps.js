@@ -16,7 +16,8 @@ jQuery(document).ready( function($){
  fetch_product_list();
  fetch_activeProject_list();
  fetch_pendingProject_list();
- 
+ fetch_negotiatingProject_list();
+
  /*
  fetch_payment_list();
  fetch_feature_list();*/
@@ -289,6 +290,18 @@ function hideorShowMore(id='', bool = false)
        success:function(data)
       { 
         $('#pendingProjectTable tbody').html(data);
+           
+     }
+    }); 
+   
+ }
+ function fetch_negotiatingProject_list()
+ {
+   $.ajax({
+    url:uri + 'project/negotiatingProject/',
+       success:function(data)
+      { 
+        $('#negotiatingProjectTable tbody').html(data);
            
      }
     }); 

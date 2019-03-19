@@ -32,16 +32,17 @@
 
           <div id="alert_message_mod"></div>       
               
-              <table  class="table table-striped table-advance table-hover" id="activeProjectTable" data-responsive="table">
+              <table  class="table table-striped table-advance table-hover" id="negotiatingProjectTable" data-responsive="table">
               <thead>
                      <tr> 
                           <th><input type="checkbox" id="AdminCheckAll" name="AdminCheckAll"  /> </th>
                            <th><i class="fa" style="font-size:24px;"></i>Product Name </th>  
+                           <th><i class="fa" style="font-size:24px;"></i>Client </th>  
                            <th><i class="icon_currency_alt"></i> Negotiated Amount </th>   
-                           <th><i class="icon_profile"></i> Manager </th>   
                          <th><i class="icon_calendar"></i> Created at </th> 
                          <th><i class="icon_calendar"></i> Updated at </th>  
-                          <th><i class="icon_cog"></i> Edit </th> 
+                         <th><i class="icon_calendar"></i> Updated by </th>  
+                          <th><i class="icon_cog"></i> Action </th> 
                      
                      </tr>
                  </thead>

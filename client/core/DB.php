@@ -4,8 +4,8 @@
 class DB 
 {
 	private static $_instance = null;
-	private $_pdo, $_query, $_error, $_result, $_count = 0,   $_paginatorcount = 0,   $_lastInsertedID = null;
-
+	private $_pdo, $_query, $_error, $_result, $_count = 0,   $_paginatorcount = 0,   $_lastInsertedID = null; 
+	private $y ="beedy";
 
 	private function __construct()
 	{
@@ -37,7 +37,7 @@ public static function getInstance()
 
 public function query($sql, $params=[])
 {
- 
+  
 	$this->_error = false; 
 	if($this->_query  = $this->_pdo->prepare($sql))
 	{
@@ -54,7 +54,7 @@ public function query($sql, $params=[])
 		{
 			$this->_result = $this->_query->fetchAll(PDO::FETCH_OBJ);
 			$this->_count = $this->_query->rowCount();
-			$this->_lastInsertedID = $this->_pdo->lastInsertId();
+			$this->_lastInsertedID = $this->_pdo->lastInsertId(); 
 		} else
 		{
 			$this->_error = true;
@@ -221,8 +221,7 @@ public function insert($table, $fields = [])
 	$valueString = rtrim($valueString, ',');
 
 $sql = "INSERT INTO {$table} ({$fieldString}) VALUES ({$valueString})";
-//if error is false 
-//	 dnd($values);
+//if error is false  
 	 if(!$this->query($sql, $values)->error())
 		 {
 		 	return true;
@@ -365,7 +364,7 @@ public function first()
 public function lastID()
 {
 	return $this->_lastInsertedID;
-}
+} 
 
 /*
 |--------------------------------------------------------------------------

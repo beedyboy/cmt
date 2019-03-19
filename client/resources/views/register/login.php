@@ -3,6 +3,7 @@
  <?php $this->start('body') ?>
  
       <?php 
+     
       // <?=base_url    <form method="post" 
 // echo    password_hash('beedyboy', 1);
 ?>
@@ -11,7 +12,7 @@
 	 	 
 	 </div>
   
- <form class="login-form" id="login-form"   method="post">
+ <form class="login-form" id="login-form"  method="post">
       <div class="login-wrap">
         <p class="login-img"><i class="icon_lock_alt"></i></p>
         <div class="input-group">

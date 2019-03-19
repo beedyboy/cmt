@@ -23,7 +23,7 @@ function sanitize($dirty)
  function currentUser()
  {
  
- 	return Admin::currentLoggedInUser();
+ 	return User::currentLoggedInUser();
  }
 
  function getUserId()

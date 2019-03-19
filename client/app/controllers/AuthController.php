@@ -9,7 +9,7 @@ class AuthController extends Controller
 	{
 		# code...
 		parent::__construct($controller, $action);
-		$this->load_model('Admin');
+		$this->load_model('User');
 
 		$this->view->setLayout('default');
 
@@ -82,7 +82,7 @@ public function logout()
 		//$this->User->logout();
 		currentUser()->logout();
 	}
-//	Router::redirect('auth/login');
+	Router::redirect('');
 }
 
  

@@ -251,9 +251,7 @@
               <li>
                 <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
               </li>
-              <li>
-                <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-              </li>
+             
             </ul>
           </li>
           <!-- user login dropdown end -->

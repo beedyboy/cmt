@@ -36,48 +36,7 @@ public function index()
         $this->view->render('user/index'); 
         $this->view->extra('layouts/beedy_kaydee');  
 }
-
-
-public function list()
-{
  
-    // $Role = new Role('roles'); 
-     $data  = $this->User->paginate(PAGE_LIMIT );
-    $x = 1;
-   foreach ($data as $User)
-  {
-             
-  ?>
-
-<tr> 
-<td>
- <input type="checkbox" name="UserCheck[]" value="<?=$User->id?>" class="UserCheckCase">  
- </td>
- 
-<td><?php echo $User->firstname; ?> </td>  
-<td><?php echo $User->othernames; ?> </td>   
-<td><?php echo $User->phone; ?> </td>   
-<td><?php echo $User->email; ?> </td>    
-<td><?php echo $User->created_at; ?> </td> 
-<td><?php echo $User->updated_at; ?> </td>  
-
-<td> 
- 
-<button type="button" name="modUser" id="<?php echo $User->id; ?>" class="btn btn-primary btn-xs modUser">
-    <i class="fas fa-pencil-alt fa-fw"></i> Edit</button>
-   </td>
-
-    
-</tr>
- 
-<?php 
-$x++; 
- } 
-  ?> 
-  <tr><td colspan="3"><?=pageLinks();?></td></tr>
-  <?php
-}
-
 public function create()
 {
     
@@ -85,88 +44,12 @@ public function create()
         $this->view->extra('User/create');
 }
 
-
- public function store()
- {
-
-        $data = array();
-        $validation = new validate(); 
-
-                    if($_POST)
-                    {
-                       
-
-                        $validation->check($_POST, [
-
-                                            'firstname'=> [
-                                            'display'=> 'First Name',
-                                            'max' => 30,
-                                            'required'=> true
-                                                ],
-
-                                            'othernames'=> [
-                                            'display'=> 'Other Names',
-                                            'max' => 50,
-                                            'required'=> true
-                                            ],
  
-
-                                            'username'=> [
-                                            'display'=> 'Username',
-                                            'unique'=> 'Users', 
-                                            'max' => 50 
-                                            ],
-
-                                            'email'=> [
-                                            'display'=> 'Email',
-                                            'unique'=> 'Users',
-                                            'required'=> true, 
-                                            'max' => 50,
-                                            'valid_email' => true
-                                            ],
-
-                                            'password'=> [
-                                            'display'=> 'Password',
-                                            'required'=> true, 
-                                            'min'=> 6
-                                            ],
-
-                                            'confirm'=> [
-                                            'display'=> 'Confirm Password',
-                                            'required'=> true,  
-                                            'matches' => 'password'
-                                            ] 
-                                                                        ]);
-
-
-                if($validation->passed())
-                {
-                  
-                    $newUser = new User('User');
-                    $newUser->registerNewUser($_POST);
-
-                    $data['status'] = "success";
-                            $data['msg']  =   'New User has been added successfully';
-                 
-                }
-                  else{
-                      $data['status'] = "error";
-                        $data['msg'] = $validation->displayErrors();
-                    } 
-
-
-                unset($_POST);
-                echo json_encode($data);
-
-                     } 
-
- }
-
  /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \\Response
      */
     public function show($id)
     {

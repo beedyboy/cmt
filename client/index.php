@@ -97,7 +97,7 @@ define('PAGE_LIMIT', $newSetting->findFirst()->pageLimit);
 if(!Session::exists(CURRENT_USER_SESSION_NAME) && Cookie::exists(REMEMBER_ME_COOKIE_NAME)):
  
 	#login from cookie
-	  Admin::loginAdminFromCookie(); 
+	  User::loginUserFromCookie(); 
 	 
 endif;
 

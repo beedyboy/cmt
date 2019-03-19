@@ -102,7 +102,7 @@ class LoginController extends Controller
 				   $remember = (isset($_POST['remember_me']) && Input::get('remember_me')) ? true : false;
 				
 				 
-			   $User->login($remember);
+			   $User->login( $User->id, $remember);
 			   
 			   $data['error'] = false;
 				$data['status'] = "green";

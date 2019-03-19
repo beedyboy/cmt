@@ -16,6 +16,7 @@ jQuery(document).ready( function($){
  fetch_product_list();
  fetch_activeProject_list();
  fetch_pendingProject_list();
+ fetch_negotiatingProject_list();
  
  /*
  fetch_payment_list();
@@ -158,6 +159,23 @@ function hideorShowMore(id='', bool = false)
    });
  
 
+  $(document).on('click', '.setPrice', function(){  
+    var id = $(this).attr("id"); 
+   $.ajax({
+    url: uri+'project/setPrice/'+id, 
+       success:function(data)
+      {
+    
+   $('.headerTitle').html("Set Project Price");
+   $('.popup-content').html(data);
+           showMod();
+           
+   }
+    });
+   
+   });
+ 
+
 //  -------------------------------------------------
 //  -------------------------------------------------
 //  -------------------------------------------------
@@ -289,6 +307,18 @@ function hideorShowMore(id='', bool = false)
        success:function(data)
       { 
         $('#pendingProjectTable tbody').html(data);
+           
+     }
+    }); 
+   
+ }
+ function fetch_negotiatingProject_list()
+ {
+   $.ajax({
+    url:uri + 'project/negotiatingProject/',
+       success:function(data)
+      { 
+        $('#negotiatingProjectTable tbody').html(data);
            
      }
     }); 
@@ -1180,6 +1210,51 @@ var formdata = $(this).serialize();
                      {
                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
                       fetch_user_list();
+                      destroyPopUp();
+                     }                     
+                    else if(data.status == "error")
+                    {
+                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+                    
+                    }
+                    
+                    else if(data.status == "val_error")
+                    {
+                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+                    
+                    }
+                    
+                    else
+                    {
+                     
+                      destroyPopUp();
+                   
+                    }
+                     hideAlertBox("alert_message_mod", "C");
+       
+             }
+
+
+          }); 
+       
+      });
+
+
+  $(document).on('submit','.updatePrice', function(evt){ 
+evt.preventDefault(); 
+var formdata = $(this).serialize();   
+        $.ajax({
+            url:uri + 'project/updatePrice',
+            type: "POST", 
+             dataType: "json", 
+             data:formdata,  
+             success:function(data){ 
+               console.log(data);
+                     if(data.status =='success')
+                     {
+                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+                      fetch_pendingProject_list();
+                      fetch_negotiatingProject_list();
                       destroyPopUp();
                      }                     
                     else if(data.status == "error")

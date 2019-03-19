@@ -28,6 +28,7 @@ public static function getFromCookie()
 		]);
 
 	} 
+	
 	if(!$userSession) return false;
 	return $userSession;
 }

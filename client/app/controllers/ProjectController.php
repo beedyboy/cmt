@@ -31,7 +31,7 @@ public function activeProject()
 	// $User = new User('users'); 
 	$Product = new Product('products'); 
 	$Project = new Project('projects'); 
-	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'projectStatus = ?', 'bind' => ['active'] ]);
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=>'userid = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id, 'Active'] ]);
  	$x = 1;
    foreach ($data as $ActiveProject)
   {
@@ -70,24 +70,65 @@ $x++;
 
 public function pendingProject()
 {
-	$User = new User('Users'); 
+	 
 	$Product = new Product('products'); 
 	$Project = new Project('projects'); 
-	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'projectStatus = ?', 'bind' => ['pending'] ]);
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'userId = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id, 'Pending'] ]);
  	$x = 1;
-   foreach ($data as $ActiveProject)
+   foreach ($data as $pendingProject)
   {
              
   ?> 
 <tr> 
 <td><?=$x;?></td>
-<td><?php echo $Product->findById($ActiveProject->productId)->product_name; ?> </td>  
+<td><?php echo $Product->findById($pendingProject->productId)->product_name; ?> </td>  
 
 <td><?php echo '<img src="data:image;base64,'.$Product->findById($ActiveProject->productId)->image.'" class="pimage" width="100" height="60" />' ?> </td>  
-<td><?php echo $ActiveProject->projectStatus; ?> </td> 
-<td><?php echo $ActiveProject->created_at; ?> </td> 
-<td><?php echo $ActiveProject->updated_at; ?> </td> 
+<td><?php echo $pendingProject->projectStatus; ?> </td> 
+<td><?php echo $pendingProject->created_at; ?> </td> 
+<td><?php echo $pendingProject->updated_at; ?> </td> 
  
+
+	 
+</tr>
+ 
+<?php 
+$x++; 
+ } 
+  ?> 
+  <tr><td colspan="4"><?=pageLinks();?></td></tr>
+  <?php
+}
+
+public function negotiatingProject()
+{ 
+	$Admin = new Admin('admins'); 
+	$Product = new Product('products'); 
+	$Project = new Project('projects'); 
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'userId = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id,'Negotiating'] ]);
+ 	$x = 1;
+   foreach ($data as $NegotiatingProject)
+  {
+             
+  ?> 
+<tr> 
+<td><?=$x;?></td>
+<td><?php echo $Product->findById($NegotiatingProject->productId)->product_name; ?> </td>  
+<td><?php echo '<img src="data:image;base64,'.$Product->findById($NegotiatingProject->productId)->image.'" class="pimage" width="100" height="60" />' ?> </td>  
+
+
+<td><?php echo $NegotiatingProject->negotiatedAmount; ?> </td>
+<td><?php echo $NegotiatingProject->projectStatus; ?> </td> 
+<td><?php echo $NegotiatingProject->created_at; ?> </td>  
+<td><?php echo $NegotiatingProject->updated_at; ?> </td> 
+<td>
+<?php $manager =  $Admin->findById($NegotiatingProject->updated_by); 
+		echo $manager->firstname. " ".$manager->lastname;?> 
+</td> 
+<td> 
+<button type="button" name="setPrice" id="<?php echo $NegotiatingProject->id; ?>" class="btn btn-primary btn-xs setPrice">
+	<i class="fas fa-pencil-alt fa-fw"></i> Set Active</button>
+</td>
 
 	 
 </tr>

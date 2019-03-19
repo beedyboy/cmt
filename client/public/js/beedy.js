@@ -6,7 +6,7 @@ jQuery(document).ready( function($){
  $("#payNow").submit( function(e) { payNow(e);  }); 
  $("#edit").change( function(e) { getHallRecord(e);  });  
  $("#seatTable").change( function(e) { getseatTable(e);  HallList(e);  }); 
- //alert('hi'); alert('hi'); 
+//  alert('hi');// alert('hi'); 
  
   /**
        *
@@ -248,7 +248,7 @@ $(_this).find(':button').html('Loading..');
   data: formdata,
   // dataType: JSON,
 	success: function( result ){ 
-    console.log(result.status); 
+    console.log(result); 
     console.log(result.msg); 
     if(result.status == 'green') 
     {

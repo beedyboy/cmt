@@ -198,11 +198,7 @@ $per_page_html .= '</div>';
  $GLOBALS['pageLinks'] = $per_page_html;
 }
  
-public static function cc() 
-{ 
-	return 23333;
-	 
-}
+ 
  
 /**
  * [setCountForPagination description]

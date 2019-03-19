@@ -16,6 +16,7 @@ class Controller extends Cmt
 
 		$this->view  = new View();
 		$this->validate  = new Validate(); 
+		$this->user_id = Auth::auth('id'); 
 	}
 
 	protected function load_model($model)
