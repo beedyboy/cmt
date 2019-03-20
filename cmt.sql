@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2019 at 11:10 PM
+-- Generation Time: Mar 20, 2019 at 01:09 PM
 -- Server version: 5.7.25-0ubuntu0.18.04.2
 -- PHP Version: 7.2.16-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -33,7 +33,7 @@ CREATE TABLE `activities` (
   `subject` varchar(50) NOT NULL,
   `media` varchar(100) DEFAULT NULL,
   `comment` text,
-  `created_on` timestamp NULL DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='send report to clients on project status';
 
 -- --------------------------------------------------------
@@ -177,7 +177,8 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `productId`, `userId`, `staffId`, `projectStatus`, `negotiatedAmount`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
-(1, 1, 2, NULL, 'Active', '25000', '2019-03-13 14:02:07', NULL, '2019-03-19 12:49:13', 1);
+(1, 1, 2, NULL, 'Active', '25000', '2019-03-13 14:02:07', NULL, '2019-03-19 12:49:13', 1),
+(2, 2, 2, NULL, 'Active', '8900', '2019-03-20 08:28:59', NULL, '2019-03-20 08:33:16', 1);
 
 -- --------------------------------------------------------
 
@@ -259,6 +260,14 @@ CREATE TABLE `wallets` (
   `amountPaid` varchar(30) NOT NULL,
   `datePaid` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `wallets`
+--
+
+INSERT INTO `wallets` (`id`, `projectId`, `amountPaid`, `datePaid`) VALUES
+(3, 1, '6,080.00', '2019-03-20 10:06:57'),
+(4, 1, '5,690.00', '2019-03-20 10:07:46');
 
 --
 -- Indexes for dumped tables
@@ -363,7 +372,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `roles`
 --
@@ -378,12 +387,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `usersessions`
 --
 ALTER TABLE `usersessions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `wallets`
 --
 ALTER TABLE `wallets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
