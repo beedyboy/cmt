@@ -48,7 +48,7 @@
  
           <li>
             <a class="" href="<?=base_url?>project/">
-                          <i class="fa fa-group"></i>
+                          <i class=" icon-task-l"></i>
                           <span>Project</span>
 
            </a>

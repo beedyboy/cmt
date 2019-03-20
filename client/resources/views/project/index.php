@@ -6,10 +6,10 @@
       
 <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-group"></i>Projects</h3>
+          <h3 class="page-header"><i class=" icon-task-l"></i>Projects</h3>
         <ol class="breadcrumb">
           <li><i class=" icon_house"></i>Home</li>
-          <li><i class="fa fa-group"></i>projects</li>
+          <li><i class=" icon-task-l"></i>projects</li>
         </ol>
              
           </div>

@@ -25,7 +25,7 @@ define('DB_NAME', 'cmt'); //database name
 
 define('DB_USER', 'root'); // database user
 
-define('DB_PASSWORD', 'beedy');
+define('DB_PASSWORD', '');
  // database password
 define('DB_HOST', 'localhost'); //database host ***use IP address to avoid DNS look up on live server
 

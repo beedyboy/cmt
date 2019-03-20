@@ -13,6 +13,8 @@ class ProjectController extends Controller
 
 		$this->view->setLayout('app');
 
+Auth::isLoggedIn();
+
 	}
 
 	 

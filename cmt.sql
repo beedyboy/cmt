@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2019 at 09:06 PM
+-- Generation Time: Mar 19, 2019 at 11:10 PM
 -- Server version: 5.7.25-0ubuntu0.18.04.2
 -- PHP Version: 7.2.16-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -167,15 +167,17 @@ CREATE TABLE `projects` (
   `projectStatus` enum('Pending','Negotiating','Active','Completed') DEFAULT 'Pending',
   `negotiatedAmount` varchar(30) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`id`, `productId`, `userId`, `staffId`, `projectStatus`, `negotiatedAmount`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, NULL, 'Pending', NULL, '2019-03-13 14:02:07', '2019-03-13 14:02:07');
+INSERT INTO `projects` (`id`, `productId`, `userId`, `staffId`, `projectStatus`, `negotiatedAmount`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
+(1, 1, 2, NULL, 'Active', '25000', '2019-03-13 14:02:07', NULL, '2019-03-19 12:49:13', 1);
 
 -- --------------------------------------------------------
 
@@ -303,7 +305,9 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`),
   ADD KEY `productId` (`productId`),
   ADD KEY `userId` (`userId`),
-  ADD KEY `staffId` (`staffId`);
+  ADD KEY `staffId` (`staffId`),
+  ADD KEY `updated_by` (`updated_by`),
+  ADD KEY `created_by` (`created_by`);
 
 --
 -- Indexes for table `roles`
@@ -321,6 +325,7 @@ ALTER TABLE `users`
 -- Indexes for table `usersessions`
 --
 ALTER TABLE `usersessions`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -370,6 +375,11 @@ ALTER TABLE `roles`
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT for table `usersessions`
+--
+ALTER TABLE `usersessions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `wallets`
 --
 ALTER TABLE `wallets`
@@ -403,7 +413,9 @@ ALTER TABLE `adminsessions`
 ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `projects_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `projects_ibfk_3` FOREIGN KEY (`staffId`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `projects_ibfk_3` FOREIGN KEY (`staffId`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `projects_ibfk_4` FOREIGN KEY (`created_by`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `projects_ibfk_5` FOREIGN KEY (`updated_by`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `usersessions`

@@ -20,8 +20,9 @@ class Pagination// extends AnotherClass
 		 * @param  array   $params     [description]
 		 * @return [type]              [description]
 		 */
-		public function getPaginate($table, $limit = '',  $params= [], $page = 1)
+		public function getPaginate($table, $limit = '',  $params, $page = 1)
 		{
+			// var_dump($params);
 			if($limit === ''): $limit =PAGE_LIMIT;
 			endif;
 
@@ -44,17 +45,20 @@ class Pagination// extends AnotherClass
 
 		if(isset($params['conditions']))
 		{
-
+			 
+			
 			if(is_array($params['conditions']))
 			{
+				// var_dump($params['conditions']);
 				foreach ($params['conditions'] as $condition)
 				 {
 					# code...
 				
-				$conditionString .= $condition. ' ';
+				$conditionString .= $condition. ' AND';
 				}
 
 				$conditionString = trim($conditionString); 
+				$conditionString = rtrim($conditionString, ' AND');
 
 			} else 
 			{
@@ -62,9 +66,11 @@ class Pagination// extends AnotherClass
 			}
 
 			if($conditionString != '')
-			{
-
+			{ 
+				// print_r (explode(" ",$conditionString));
+				// echo implode(" AND ",$conditionString);
 				$conditionString = ' WHERE ' .$conditionString;
+				// echo $conditionString;
 			}
 
 		}
@@ -92,11 +98,11 @@ class Pagination// extends AnotherClass
 		$start_from = ($this->_page-1) * $limit; 
 
 		$tsql = "SELECT * FROM {$table} {$conditionString}";
-
+ 
 		$this->setCountForPagination($tsql, $bind);
 
 		$sql = "SELECT * FROM {$table} {$conditionString} {$order} LIMIT {$start_from}, {$limit} ";
- 
+
 		return $resultQuery = $this->_db->query($sql, $bind); 
 
 		}

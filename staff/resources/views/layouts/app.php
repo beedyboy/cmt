@@ -62,7 +62,7 @@
     <div class="text-right">
       <div class="credits">
            
-          Framework by <a href="https://bootstrapmade.com/">Techanow</a>
+          <!-- Framework by <a href="https://bootstrapmade.com/">Techanow</a> -->
       </div>
     </div>
  

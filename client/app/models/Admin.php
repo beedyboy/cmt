@@ -2,7 +2,7 @@
 /**
 * 
 */
-class Admin extends Auth
+class Admin extends Model
 {
  
 	

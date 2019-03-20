@@ -15,4 +15,11 @@
           </div>
        
 </div>
+
+<div class="row">
+     <div class="col-lg-12">
+       Summary comes here
+    </div>
+
+</div>
     <?php $this->end() ?>

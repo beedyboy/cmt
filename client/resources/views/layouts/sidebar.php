@@ -3,7 +3,7 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu">
           <li class="active">
-            <a class="" href="index.html">
+            <a class="" href="<?=base_url?>">
                           <i class="icon_house_alt"></i>
                           <span>Dashboard</span>
                       </a>
@@ -23,7 +23,7 @@
  
           <li>
             <a class="" href="<?=base_url?>project/">
-                          <i class="fa fa-group"></i>
+                          <i class=" icon-task-l"></i>
                           <span>Project</span>
 
            </a>

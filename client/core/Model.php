@@ -136,7 +136,7 @@ $resolvedUrl = resolveCurrentPath();
 
 $pageNum = pageNum($resolvedUrl); 
  
-   
+//    var_dump($params);
 $results = [];
 		$resultQuery = $this->getPaginate($this->_table, $limit,  $params , $pageNum); 
 // return $resultQuery->results();

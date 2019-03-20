@@ -3,18 +3,21 @@
 * 
 */
 class ProjectController extends Controller
-{
-	
+{ 
+
 	public function __construct($controller, $action)
 	{
 		# code...
 		parent::__construct($controller, $action);
+		
+		Auth::isLoggedIn();
+		
 		$this->load_model('Project');
 
-		$this->view->setLayout('app');
-
+		$this->view->setLayout('app'); 
 	}
-
+ 
+	
 	 
  
 public function index()
@@ -29,9 +32,12 @@ public function activeProject()
 {
 	// $Admin = new Admin('admins'); 
 	// $User = new User('users'); 
-	$Product = new Product('products'); 
-	$Project = new Project('projects'); 
-	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=>'userid = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id, 'Active'] ]);
+	$Product = new Product('products');  
+
+	  $data  = $this->Project->paginate(PAGE_LIMIT,[
+		  'conditions'=>
+	  ['userId = ?', ' projectStatus = ? '], 
+	  'bind' => [(int)$this->user_id, 'Active'] ]);
  	$x = 1;
    foreach ($data as $ActiveProject)
   {
@@ -53,8 +59,11 @@ public function activeProject()
 <td><?php echo $ActiveProject->created_at; ?> </td> 
 <td><?php echo $ActiveProject->updated_at; ?> </td> 
 <td> 
-<button type="button" name="modActiveProject" part='list' id="<?php echo $ActiveProject->id; ?>" class="btn btn-primary btn-xs modActiveProject">
-	<i class="fas fa-pencil-alt fa-fw"></i> Edit</button>
+<a  href="<?=base_url.'project/show/'.$ActiveProject->id?>"   class="btn btn-primary btn-xs ">
+	<i class="fas fa-pencil-alt fa-fw"></i> View</button>
+ 
+<!-- <button type="button" name="viewActiveProject" part='list' id="<?php echo $ActiveProject->id; ?>" class="btn btn-primary btn-xs viewActiveProject">
+	<i class="fas fa-pencil-alt fa-fw"></i> View</button> -->
 </td>
 
 	 
@@ -71,9 +80,8 @@ $x++;
 public function pendingProject()
 {
 	 
-	$Product = new Product('products'); 
-	$Project = new Project('projects'); 
-	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'userId = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id, 'Pending'] ]);
+	$Product = new Product('products');  
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> ['userId = ?', ' projectStatus = ?'], 'bind' => [(int)$this->user_id, 'Pending'] ]);
  	$x = 1;
    foreach ($data as $pendingProject)
   {
@@ -83,13 +91,10 @@ public function pendingProject()
 <td><?=$x;?></td>
 <td><?php echo $Product->findById($pendingProject->productId)->product_name; ?> </td>  
 
-<td><?php echo '<img src="data:image;base64,'.$Product->findById($ActiveProject->productId)->image.'" class="pimage" width="100" height="60" />' ?> </td>  
+<td><?php echo '<img src="data:image;base64,'.$Product->findById($pendingProject->productId)->image.'" class="pimage" width="100" height="60" />' ?> </td>  
 <td><?php echo $pendingProject->projectStatus; ?> </td> 
 <td><?php echo $pendingProject->created_at; ?> </td> 
-<td><?php echo $pendingProject->updated_at; ?> </td> 
- 
-
-	 
+<td><?php echo $pendingProject->updated_at; ?> </td>  
 </tr>
  
 <?php 
@@ -105,7 +110,7 @@ public function negotiatingProject()
 	$Admin = new Admin('admins'); 
 	$Product = new Product('products'); 
 	$Project = new Project('projects'); 
-	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> 'userId = ?', ' AND projectStatus = ?', 'bind' => [(int)$this->user_id,'Negotiating'] ]);
+	 $data  = $this->Project->paginate(PAGE_LIMIT,['conditions'=> ['userId = ?', ' projectStatus = ?'], 'bind' => [(int)$this->user_id,'Negotiating'] ]);
  	$x = 1;
    foreach ($data as $NegotiatingProject)
   {
@@ -122,12 +127,14 @@ public function negotiatingProject()
 <td><?php echo $NegotiatingProject->created_at; ?> </td>  
 <td><?php echo $NegotiatingProject->updated_at; ?> </td> 
 <td>
-<?php $manager =  $Admin->findById($NegotiatingProject->updated_by); 
+<?php
+// echo $NegotiatingProject->updated_by;
+ $manager =  $Admin->findById($NegotiatingProject->updated_by); 
 		echo $manager->firstname. " ".$manager->lastname;?> 
 </td> 
 <td> 
-<button type="button" name="setPrice" id="<?php echo $NegotiatingProject->id; ?>" class="btn btn-primary btn-xs setPrice">
-	<i class="fas fa-pencil-alt fa-fw"></i> Set Active</button>
+<button type="button" name="agreePrice" id="<?php echo $NegotiatingProject->id; ?>" class="btn btn-primary btn-xs agreePrice">
+	<i class="fas fa-pencil-alt fa-fw"></i> Sets Active</button>
 </td>
 
 	 
@@ -170,6 +177,34 @@ public function create()
 }
  
 
+public function agreePrice($id)
+{
+  
+		 
+			$data = array(); 
+			  
+		   		$fields = [ 'projectStatus'=>'Active' ];	
+		   			//update the db
+		   			$send = $this->Project->update($fields, (int)$id );
+					 
+		   			//check if updated
+		   			if($send)
+		   			{
+							$data['status'] = "success";
+							$data['msg']  =   'Project now active';
+   				  
+		   			}
+		   			else
+		   			{
+		   				$data['status'] = "db_error";
+		   				$data['msg'] = "Error:  Please try again later";
+		   			}
+		   		 
+		   echo json_encode($data);  
+ 					
+ 	 
+ //update ends down here
+}
 
  
 
@@ -295,4 +330,16 @@ if($_POST)
 }
 
 
+
+public function show($id)
+{ 
+
+		$this->view->displayErrors = $this->validate->displayErrors(); 	
+	  	$this->view->data  = $this->Project->findById($id);
+		$this->view->render('project/show'); 
+		$this->view->extra('layouts/beedy_kaydee');  
+}
+
+
+//end class
 }

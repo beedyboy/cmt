@@ -42,7 +42,7 @@
                            <th><i class="icon_profile"></i> Status </th>   
                          <th><i class="icon_calendar"></i> Created at </th> 
                          <th><i class="icon_calendar"></i> Updated at </th>  
-                         <th><i class="icon_calendar"></i> Updated by </th>  
+                         <th><i class="icon_profile"></i> Updated by </th>  
                           <th><i class="icon_cog"></i> Action </th> 
                      
                      </tr>

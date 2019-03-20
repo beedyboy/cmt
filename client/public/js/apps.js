@@ -17,7 +17,8 @@ jQuery(document).ready( function($){
  fetch_activeProject_list();
  fetch_pendingProject_list();
  fetch_negotiatingProject_list();
-
+ fetch_wallet_balance();
+ fetch_payment_summary();
  /*
  fetch_payment_list();
  fetch_feature_list();*/
@@ -150,6 +151,24 @@ function hideorShowMore(id='', bool = false)
       {
     
    $('.headerTitle').html("Create a Project");
+   $('.popup-content').html(data);
+           showMod();
+           
+   }
+    });
+   
+   });
+ 
+
+  $(document).on('click', '.payNow', function(){  
+
+  var id = $(this).attr("id"); 
+   $.ajax({
+    url: uri+'wallet/payNow/'+id, 
+       success:function(data)
+      {
+    
+   $('.headerTitle').html("Make Payment");
    $('.popup-content').html(data);
            showMod();
            
@@ -320,10 +339,22 @@ function hideorShowMore(id='', bool = false)
     }); 
    
  }
- function fetch_payment_summary(){
-  var evt_id = $("#evt_id").val();
+ function fetch_wallet_balance(){
+  var wallet = $("#wallet").val();
  $.ajax({
-    url:uri + 'payment/summary/'+evt_id,
+    url:uri + 'wallet/walletBalance/'+wallet,
+       success:function(data)
+      {  
+  $('#walletBalance').html(data);
+           
+   }
+    }); 
+   
+ }
+ function fetch_payment_summary(){
+  var wallet = $("#wallet").val();
+ $.ajax({
+    url:uri + 'wallet/summary/'+wallet,
        success:function(data)
       {  
   $('#paySummary').html(data);
@@ -738,6 +769,49 @@ $(document).on('submit','.storeProject', function(evt)
           }); 
 });
  
+ 
+$(document).on('submit','.savePayment', function(evt)
+{
+ 
+  evt.preventDefault();
+  var formdata = $(this).serialize();   
+           $.ajax({
+            url:uri + 'wallet/savePayment',
+            type: "POST", 
+            dataType: "json",   
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+             success:function(data)
+             { 
+               console.log(data);
+                     if(data.status =='success')
+                     {
+                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');  
+                      fetch_wallet_balance();  
+                      fetch_payment_summary();
+                      destroyPopUp();
+                     }
+                     
+                     else if(data.status == "error")
+                    {
+                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+                    
+                    }
+                    
+                    else
+                    {
+                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+                   
+                    }
+              hideAlertBox("alert_message_mod", "C");
+             }
+
+
+          }); 
+});
+ 
 
 $(document).on('submit','.storeRecovery', function(evt)
 { 
@@ -1018,33 +1092,28 @@ $(document).on('change', '#getReportFromEvt', function(){
      /*????????????????????????????UPDATE MODIFIED FIELDS???????????????????????????????????*/
  
 /**
- * [update category]
+ * [update agreePrice]
  * @param  {[type]} evt){    
  * @return {[json result]}        [error or success message]
  */
-  $(document).on('submit','.updateCategory', function(evt){ 
+  $(document).on('click','.agreePrice', function(evt){ 
 evt.preventDefault();
-var formdata = $(this).serialize();  
+var id = $(this).attr("id");  
         $.ajax({
-            url:uri + 'category/update',
+            url:uri + 'project/agreePrice/'+id, 
             type: "POST", 
-             dataType: "json", 
-             data:formdata,  
-             success:function(data){
- 
+            dataType: "json", 
+            // data:formdata,   
+             success:function(data){ 
                      if(data.status =='success')
                      {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
-                      fetch_category_list();
-                      destroyPopUp();
+                       console.log(data);
+                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');
+                      fetch_negotiatingProject_list();    
+                      fetch_activeProject_list();
+                      // destroyPopUp();
                      }
-                     
-                     else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
-                    
-                    }
-                    
+                      
                     else
                     {
                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
@@ -1059,215 +1128,215 @@ var formdata = $(this).serialize();
        
       }); 
 
-  $(document).on('submit','.updateproduct', function(evt){ 
-evt.preventDefault(); 
-var formdata = $(this).serialize();   
-        $.ajax({
-            url:uri + 'product/update',
-            type: "POST", 
-             dataType: "json", 
-             data:formdata,  
-             success:function(data){
+//   $(document).on('submit','.updateproduct', function(evt){ 
+// evt.preventDefault(); 
+// var formdata = $(this).serialize();   
+//         $.ajax({
+//             url:uri + 'product/update',
+//             type: "POST", 
+//              dataType: "json", 
+//              data:formdata,  
+//              success:function(data){
  
-                     if(data.status =='success')
-                     {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
-                      fetch_product_list();
-                      destroyPopUp();
-                     }
+//                      if(data.status =='success')
+//                      {
+//                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+//                       fetch_product_list();
+//                       destroyPopUp();
+//                      }
                      
-                     else if(data.status == "redirect")
-                    {
+//                      else if(data.status == "redirect")
+//                     {
                  
-                      location.href=""+data.msg;
+//                       location.href=""+data.msg;
                     
-                    }
+//                     }
                     
-                    else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//                     else if(data.status == "error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else
-                    {
+//                     else
+//                     {
                      
-                      destroyPopUp();
+//                       destroyPopUp();
                    
-                    }
-                     hideAlertBox("alert_message_mod", "C");
+//                     }
+//                      hideAlertBox("alert_message_mod", "C");
        
-             }
+//              }
 
 
-          }); 
+//           }); 
        
-      });
+//       });
 
 
-  $(document).on('submit','.updatePayment', function(evt){ 
-evt.preventDefault(); 
-var formdata = $(this).serialize();   
-        $.ajax({
-            url:uri + 'payment/update',
-            type: "POST", 
-             dataType: "json", 
-             data:formdata,  
-             success:function(data){
+//   $(document).on('submit','.updatePayment', function(evt){ 
+// evt.preventDefault(); 
+// var formdata = $(this).serialize();   
+//         $.ajax({
+//             url:uri + 'payment/update',
+//             type: "POST", 
+//              dataType: "json", 
+//              data:formdata,  
+//              success:function(data){
  
-                     if(data.status =='success')
-                     {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
-                      fetch_payment_list();
-                      destroyPopUp();
-                     }                     
-                    else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//                      if(data.status =='success')
+//                      {
+//                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+//                       fetch_payment_list();
+//                       destroyPopUp();
+//                      }                     
+//                     else if(data.status == "error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else
-                    {
+//                     else
+//                     {
                      
-                      destroyPopUp();
+//                       destroyPopUp();
                    
-                    }
-                     hideAlertBox("alert_message_mod", "C");
+//                     }
+//                      hideAlertBox("alert_message_mod", "C");
        
-             }
+//              }
 
 
-          }); 
+//           }); 
        
-      });
+//       });
 
-  $(document).on('submit','.updateAdmin', function(evt){ 
-evt.preventDefault(); 
-var formdata = $(this).serialize();   
-        $.ajax({
-            url:uri + 'admin/update',
-            type: "POST", 
-             dataType: "json", 
-             data:formdata,  
-             success:function(data){
+//   $(document).on('submit','.updateAdmin', function(evt){ 
+// evt.preventDefault(); 
+// var formdata = $(this).serialize();   
+//         $.ajax({
+//             url:uri + 'admin/update',
+//             type: "POST", 
+//              dataType: "json", 
+//              data:formdata,  
+//              success:function(data){
  
-                     if(data.status =='success')
-                     {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
-                      fetch_Admin_list();
-                      destroyPopUp();
-                     }                     
-                    else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//                      if(data.status =='success')
+//                      {
+//                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+//                       fetch_Admin_list();
+//                       destroyPopUp();
+//                      }                     
+//                     else if(data.status == "error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else
-                    {
+//                     else
+//                     {
                      
-                      destroyPopUp();
+//                       destroyPopUp();
                    
-                    }
-                     hideAlertBox("alert_message_mod", "C");
+//                     }
+//                      hideAlertBox("alert_message_mod", "C");
        
-             }
+//              }
 
 
-          }); 
+//           }); 
        
-      });
+//       });
 
 
-  $(document).on('submit','.updateUser', function(evt){ 
-evt.preventDefault(); 
-var formdata = $(this).serialize();   
-        $.ajax({
-            url:uri + 'user/update',
-            type: "POST", 
-             dataType: "json", 
-             data:formdata,  
-             success:function(data){ 
-                     if(data.status =='success')
-                     {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
-                      fetch_user_list();
-                      destroyPopUp();
-                     }                     
-                    else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//   $(document).on('submit','.updateUser', function(evt){ 
+// evt.preventDefault(); 
+// var formdata = $(this).serialize();   
+//         $.ajax({
+//             url:uri + 'user/update',
+//             type: "POST", 
+//              dataType: "json", 
+//              data:formdata,  
+//              success:function(data){ 
+//                      if(data.status =='success')
+//                      {
+//                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+//                       fetch_user_list();
+//                       destroyPopUp();
+//                      }                     
+//                     else if(data.status == "error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else if(data.status == "val_error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//                     else if(data.status == "val_error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else
-                    {
+//                     else
+//                     {
                      
-                      destroyPopUp();
+//                       destroyPopUp();
                    
-                    }
-                     hideAlertBox("alert_message_mod", "C");
+//                     }
+//                      hideAlertBox("alert_message_mod", "C");
        
-             }
+//              }
 
 
-          }); 
+//           }); 
        
-      });
+//       });
 
 
 
-  $(document).on('submit','.updateSettings', function(evt){ 
-evt.preventDefault();
-      var swi = '';         
-if($("#myonoffswitch").prop("checked"))
-{
-  swi ="Maintenance";
-}
-else{
-    swi ="Active";
-}
+//   $(document).on('submit','.updateSettings', function(evt){ 
+// evt.preventDefault();
+//       var swi = '';         
+// if($("#myonoffswitch").prop("checked"))
+// {
+//   swi ="Maintenance";
+// }
+// else{
+//     swi ="Active";
+// }
  
-  var formdata = $(this).serialize()+ "&usermode=" + swi;  
+//   var formdata = $(this).serialize()+ "&usermode=" + swi;  
   
-        $.ajax({
-            url:uri + 'settings/update',
-            type: "POST", 
-             data:formdata,  
-             dataType: "json", 
-             success:function(data){ 
+//         $.ajax({
+//             url:uri + 'settings/update',
+//             type: "POST", 
+//              data:formdata,  
+//              dataType: "json", 
+//              success:function(data){ 
              
-                     if(data.status =='success')
-                     {
-                      $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
+//                      if(data.status =='success')
+//                      {
+//                       $('.alert_message_mod').html('<div class="alert alert-success" role="alert">' + data.msg + '</div>');    
                        
-                     }                     
-                    else if(data.status == "error")
-                    {
-                      $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
+//                      }                     
+//                     else if(data.status == "error")
+//                     {
+//                       $('.alert_message_mod').html('<div class="alert alert-danger"role="alert">' + data.msg + '</div>');
                     
-                    }
+//                     }
                     
-                    else
-                    {
+//                     else
+//                     {
                       
                    
-                    }
-                     hideAlertBox("alert_message_mod", "C");
+//                     }
+//                      hideAlertBox("alert_message_mod", "C");
        
-             }
+//              }
 
 
-          }); 
+//           }); 
        
-      });
+//       });
 
 /*?????????????????????????????????????????????????????????????????????????????????????*/
 
