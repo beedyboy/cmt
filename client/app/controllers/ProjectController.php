@@ -92,7 +92,7 @@ public function pendingProject()
 <td><?php echo $Product->findById($pendingProject->productId)->product_name; ?> </td>  
 
 <td><?php echo '<img src="data:image;base64,'.$Product->findById($pendingProject->productId)->image.'" class="pimage" width="100" height="60" />' ?> </td>  
-<td><?php echo $pendingProject->projectStatus; ?> </td> 
+<!-- <td><?php echo $pendingProject->projectStatus; ?> </td>  -->
 <td><?php echo $pendingProject->created_at; ?> </td> 
 <td><?php echo $pendingProject->updated_at; ?> </td>  
 </tr>
@@ -123,7 +123,7 @@ public function negotiatingProject()
 
 
 <td><?php echo $NegotiatingProject->negotiatedAmount; ?> </td>
-<td><?php echo $NegotiatingProject->projectStatus; ?> </td> 
+<!-- <td><?php echo $NegotiatingProject->projectStatus; ?> </td>  -->
 <td><?php echo $NegotiatingProject->created_at; ?> </td>  
 <td><?php echo $NegotiatingProject->updated_at; ?> </td> 
 <td>
@@ -148,21 +148,6 @@ $x++;
   <?php
 }
 
-public function list2()
-{
-$db= DB::getInstance();
-	$data = [];
-	$out = array('error' => false);
-	 $Project = $db->find('projects');
-
-  	$out['Project'] = $Project;
-
-  	
- 	   header("Content-type: application/json");
-echo json_encode($out);
-
-  	die();
-}
 
  
 public function create()
@@ -336,10 +321,19 @@ public function show($id)
 
 		$this->view->displayErrors = $this->validate->displayErrors(); 	
 	  	$this->view->data  = $this->Project->findById($id);
+	  	$this->view->projectList  = $this->projectList();
 		$this->view->render('project/show'); 
 		$this->view->extra('layouts/beedy_kaydee');  
 }
 
+public function projectList()
+{
+	  
+
+	$data  = $this->Project->paginate(PAGE_LIMIT,[ 'conditions'=> ['userId = ?', ' projectStatus = ? '],  'bind' => [(int)$this->user_id, 'Active'] ]);
+	return $data;
+}
+ 
 
 //end class
 }

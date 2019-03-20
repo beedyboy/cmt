@@ -17,8 +17,10 @@ jQuery(document).ready( function($){
  fetch_activeProject_list();
  fetch_pendingProject_list();
  fetch_negotiatingProject_list();
+
  fetch_wallet_balance();
  fetch_payment_summary();
+ fetch_project_activity();
  /*
  fetch_payment_list();
  fetch_feature_list();*/
@@ -346,6 +348,18 @@ function hideorShowMore(id='', bool = false)
        success:function(data)
       {  
   $('#walletBalance').html(data);
+           
+   }
+    }); 
+   
+ }
+ function fetch_project_activity(){
+  var wallet = $("#wallet").val();
+ $.ajax({
+    url:uri + 'activity/projectActivity/'+wallet,
+       success:function(data)
+      {  
+  $('#activityTable tbody').html(data);
            
    }
     }); 

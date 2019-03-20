@@ -99,7 +99,7 @@ public function walletBalance($id)
 
 	 if(count($data) < 1):
 		$empty = true;
-		$msg = "No payment has been made so far";
+		$msg = "Wallet Empty";
 
 	 else:
 	foreach ($data as $value)
@@ -114,14 +114,14 @@ public function walletBalance($id)
  
 ?>
 <div class="info-box greenLight-bg">
-               
+               <i class="icon_wallet_alt"></i>
                 <div class="count">
-								<?=($amount == '0')? $msg: '<i class="icon_wallet_alt"></i>'.formatMoney($amount);?>
+								<?=($amount == '0')? $msg: formatMoney($amount);?>
                 </div>
                   <div class="title">
                 Wallet  
 							   <button type="button" id="<?=$id;?>" class="btn btn-primary btn-xs payNow">
-						 <i class="fa   fa-money "></i> Pay Now</button>  
+						 <i class="icon_creditcard"></i> Pay Now</button>  
 
                   </div>
 
@@ -136,7 +136,7 @@ public function summary($id)
 	 $data  = $this->Wallet->find($field);
 
 	 if(count($data) < 1):
-echo '<div class="info-box magenta-bg">Last transaction is empty</div>';
+echo '<div class="info-box magenta-bg">No payment has been made so far</div>';
 
 	 else:
 	foreach ($data as $value)

@@ -35,13 +35,13 @@
               <thead>
                      <tr> 
                           <th><input type="checkbox" id="AdminCheckAll" name="AdminCheckAll"  /> </th>
-                           <th><i class="fa" style="font-size:24px;"></i>Product Name </th>  
-                           <th><i class="fa" style="font-size:24px;"></i>Product Image </th>  
+                           <th><i class="icon_ribbon_alt" style="font-size:24px;"></i>Product Name </th>  
+                           <th><i class="icon_image" style="font-size:24px;"></i>Product Image </th>  
                            <th><i class="icon_currency_alt"></i> Negotiated Amount </th>   
                            <!-- <th><i class="icon_profile"></i> Manager </th>    -->
                          <th><i class="icon_calendar"></i> Created at </th> 
                          <th><i class="icon_calendar"></i> Updated at </th>  
-                          <th><i class="icon_cog"></i> Edit </th> 
+                          <th><i class="icon_cog"></i> Action </th> 
                      
                      </tr>
                  </thead>
