@@ -151,8 +151,8 @@ $last = array_values(array_slice($data, -1))[0];
 	<i class="icon_balance"></i>
 	<div class="count">
 		    '.formatMoney($last->amountPaid,false).'
-				
-				<strong>Date Paid:</strong>  '.$last->datePaid.'
+				<br />
+				<strong>Date :</strong>  '.$last->datePaid.'
 	</div>
 		<div class="title">
 		Last Transaction Amount:  
@@ -209,7 +209,8 @@ public function savePayment()
 						  	$fields = [										 
 										'projectId' => Input::get('id'),									 
 									 						 
-										'amountPaid' => formatMoney(Input::get('amount'),true)								 
+										'amountPaid' => formatMoney(Input::get('amount'),true),
+										'datePaid'=>setTimeStamp()							 
 										  
 							];	
  
